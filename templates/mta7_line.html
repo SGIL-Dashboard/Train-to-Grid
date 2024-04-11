@@ -2053,7 +2053,7 @@
       $('#transient-table tr[name="' + transient_data.origin_station + '"]').remove()
       var temp = `<tr class="t-station" style="background-color:rgb(249, 249, 249);" name="${transient_data.origin_station}">
           <td style="font-weight : bold;">${passengerStationDict[transient_data.origin_station]}</td>
-          <td>${passengerStationDict[transient_data.destination_station]}</td>
+          <td style="font-weight : bold;">${passengerStationDict[transient_data.destination_station]}</td>
           <td>${transient_data.train_type}</td>
           <td>
             <img value="${transient_data.origin_station}" name="edit" style="width:20px;" src="${$('#mta_7_line_details').attr('edit-src')}" alt="">
