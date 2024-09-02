@@ -389,7 +389,7 @@
     color: black;
     text-align: center;
     padding-top: 1rem;
-    padding-bottom: 1.5rem;
+    /*padding-bottom: 1.5rem;*/
   }
 
   .toggleDiv {
@@ -656,9 +656,10 @@
                         <input class="mta-facility-option" type="checkbox" id="mta_energy_storage" name="energy_storage"
                           value="energy_storage" />
                         <label class="modal-labels" for="mta_energy_storage">Energy Storage</label>
-                        <input class="mta-facility-option solar-check-box d-none" type="checkbox" id="mta_solar"
+                        <input class="mta-facility-option solar-check-box disabled" type="checkbox" id="mta_solar"
                           name="solar" value="solar" />
-                        <label class="modal-labels solar-check-box d-none" for="mta_solar">Solar</label>
+                          <span class="wrap">
+                        <span class="tool" data-tip="Solar option unavailable for underground station" tabindex="1"><label class="modal-labels solar-check-box disabled" for="mta_solar">Solar</label></span></span>
                       </div>
                       <div class="md-form form-group energy_storage_expand" style="display: none;">
                         <input class="facility-option" type="checkbox" id="mta_battery" name="battery"
@@ -673,36 +674,39 @@
                       </div>
                       <div class="form-group mta-size-parameter row">
                         <div class="electric_vehicle_expand mb-2 col-md-6" style="display: none;">
-                          <label for="ev_size" class="mta-ev-size-expand">EV Size (MW):</label>
-                          <input label="EV Size" class="mta-ev-size-expand" type="number" id="ev_size" min="0" max="1"
-                            step="0.1" name="ev_size" value="ev_size" />
+                          <label for="ev_size" class="mta-ev-size-expand wrap"><span class="tool" data-tip="Selected EV Size" tabindex="1">EV Size (MW):</span></label>
+                          <input label="EV Size" class="mta-ev-size-expand" type="range" id="ev_size" min="0" max="1"
+                            step="0.1" name="ev_size" value="ev_size" oninput="updateValue(this.value,'ev_sizeValue')"/><span id="ev_sizeValue">0</span>
                         </div>
                         <div class="solar_expand col-md-6" style="display: none;">
                           <label for="solar_size" class="mta-solar-size-expand">Solar Size (kW):</label>
-                          <input label="Solar Size" class="mta-solar-size-expand" type="number" id="solar_size" min="0"
-                            max="200" name="solar_size" value="solar_size" />
+                          <input label="Solar Size" class="mta-solar-size-expand" type="range" id="solar_size" min="0"
+                            max="200" name="solar_size" value="solar_size" oninput="updateValue(this.value,'solar_sizeValue')"/><span id="solar_sizeValue">0</span>
                         </div>
-                        <div class="mta-energy_storage-parameter row">
+                        <div class="mta-energy_storage-parameter row flex-container">
                           <div class="ml-lg-3 mr-3 battery_expand" style="display: none;">
                             <label for="battery_size" class="modal-labels">Battery Size (MW):</label>
-                            <input label="Battery Size" class="facility-option" min="0" max="3" type="number"
-                              id="battery_size" step="0.1" name="battery_size" value="battery_size" />
+                            <input label="Battery Size" class="facility-option" min="0" max="3" type="range"
+                              id="battery_size" step="0.1" name="battery_size" value="battery_size" oninput="updateValue(this.value,'battery_sizeValue')"/><span id="battery_sizeValue">0</span>
                           </div>
                           <div class="ml-3 mr-3 fly_wheel_expand" style="display: none;">
                             <label for="fly_size" class="modal-labels">Flywheel Size (MW):</label>
-                            <input label="Fly Size" class="facility-option" min="0" max="2" type="number" id="fly_size"
-                              step="0.1" name="fly_size" value="fly_size" />
+                            <input label="Fly Size" class="facility-option" min="0" max="2" type="range" id="fly_size"
+                              step="0.1" name="fly_size" value="fly_size" oninput="updateValue(this.value,'fly_sizeValue')"/><span id="fly_sizeValue">0</span>
                           </div>
                           <div class="ml-3 mr-3 supercapacitor_expand" style="display: none;">
                             <label for="supercapacitor_size" class="modal-labels">Supercapacitor Size (MW):</label>
-                            <input label="Supercapacitor Size" class="facility-option" min="0" max="1" type="number"
+                            <input label="Supercapacitor Size" class="facility-option" min="0" max="1" type="range"
                               id="supercapacitor_size" step="0.1" name="supercapacitor_size"
-                              value="supercapacitor_size" />
+                              value="supercapacitor_size" oninput="updateValue(this.value,'supercapacitor_sizeValue')"/><span id="supercapacitor_sizeValue">0</span>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <a class="btn btn-primary" name="mta_form_submit"><span>submit</span></a>
+                    <div class="note-box">
+                      Note: Sizing options depend on load capacity and available infrastructure space.
+                    </div>
+                    <a class="btn btn-primary mt-15" name="mta_form_submit"><span>submit</span></a>
                   </form>
                 </div>
               </div>
@@ -712,7 +716,7 @@
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header text-center">
-                  <h4 id="modal-title" class="modal-title w-100 font-weight-bold">Select Stations and Train Type</h4>
+                  <h4 id="modal-title" class="modal-title w-100 font-weight-bold">Select Train</h4>
                   <button type="button" class="mta_close close" data-dismiss="modal" aria-label="Close"><span
                       aria-hidden="true">×</span></button>
                 </div>
@@ -720,7 +724,7 @@
                   <form id="transient_details_form">
                     <table class="table table-borderless">
                       <tr>
-                        <td><label for="transient_train_type">Train Type</label></td>
+                        <td><label for="transient_train_type">Service</label></td>
                         <td><select aria-describedby="Select Train Type" placeholder="Select Train Type"
                             class="form-control" id="transient_train_type" name="train_type">
                             <option name="" value="">Select Train Type</option>
@@ -730,7 +734,7 @@
                       </tr>
                       <tr>
                         <td>
-                          <label for="transient_origin_station" class="org_station">Origin station</label>
+                          <label for="transient_origin_station" class="org_station">Origin Station</label>
                         </td>
                         <td>
                           <select aria-describedby="Select Origin station" placeholder="Select Origin station"
@@ -762,7 +766,7 @@
                         </td>
                       </tr>
                       <tr>
-                        <td><label for="transient_destination_station" class="dest_station">Destination station</label>
+                        <td><label for="transient_destination_station" class="dest_station">Destination Station</label>
                         </td>
                         <td><select aria-describedby="Select Destination station"
                             placeholder="Select Destination station" class="dest_station form-control"
@@ -801,9 +805,15 @@
           </div>
         </div>
 
-        <div class="" style="display: flex; flex-direction: column; align-items: center;">
+        <!-- <div class="" style="display: flex; flex-direction: column; align-items: center;">
           <div class="div"
             style="width: 100%; font-size: 20px; display: flex; align-items: center; justify-content: space-evenly;">
+            <div class="div"
+              style="width: fit-content; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;">
+              <p class="mt20">
+                <span class="cust-tooltip" data-tooltip="Distributed Energy Resources (DERs) are small-scaled devices that generate, store, or consume energy. They allow for independent operation away from the power grid, thereby producing cleaner energy." data-tooltip-pos="bottom" data-tooltip-length="medium">What are DERs?</span>
+            </p>
+            </div>
             <div class="div"
               style="width: fit-content; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;">
               <div class="pointer" style="position: static; width: 40px; height: 40px;">
@@ -812,25 +822,37 @@
               <span style="color: rgb(149, 149, 149);">Passenger Station</span>
             </div>
             <span style="display: flex;flex-direction: column;align-items: center; ">
-              <h2 style="font-size: 29px; font-weight: 600; color: #3949AB;">MTA 7-Line</h2>
+              <h2 style="font-size: 29px; font-weight: 600; color: #3949AB;font-family: 'HelveticaNowMTText';">MTA 7-Line</h2>
               <h2 style="font-size: 18px; color: rgb(149, 149, 149);">Map View</h2>
             </span>
             <div class="div"
               style="width: fit-content; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;">
               <div class="pointer"
-                style="position: static; width: 40px; height: 40px; overflow: hidden; background-color: black; border-radius: 5px;">
+                style="position: static; width: 40px; height: 40px; overflow: hidden; background-color: #283a7d; border-radius: 5px;">
                 <img src="{% static 'images/electricityLogo2.png' %}" class="logoImage" alt="" />
               </div>
               <span style="color: rgb(149, 149, 149);">Power Station</span>
             </div>
           </div>
-          <!-- <img src="{% static 'images/plug.png' %}" alt="" /> -->
         </div>
-      </div>
+      </div> -->
+
+        <div class="cust-container">
+          <div class="left wrap">
+              <p class="mt20">
+                <span class="tool" data-tip="Distributed Energy Resources (DERs) are small-scaled devices that generate, store, or consume energy. They allow for independent operation away from the power grid, thereby producing cleaner energy." tabindex="1">What are DERs?</span>
+            </p>
+          </div>
+
+          <div class="center">
+              <h2 class="center-heading" style="font-size: 29px; font-weight: 600; color: #3949AB;font-family: 'HelveticaNowMTText';">Your personal DER Integrator</h2>
+              <!-- <h3 class="center-subheading" style="font-size: 18px; color: rgb(149, 149, 149);">Map View</h3> -->
+          </div>
+        </div>
       <br>
       <!-- <iframe src="https://www.google.com/maps/d/u/2/embed?mid=1j_wHYjnVX6n7nXNyzFLZuYs6VFm3YpFA&ehbc=2E312F" width="100%" height="500" frameborder="0"></iframe> -->
       <div id="new-content" style="position: relative;">
-        <img src="{% static 'images/Map.png' %}" usemap="#image-map" />
+        <img src="{% static 'images/Map.jpg' %}" usemap="#image-map" />
         <div class="div" style=" position: absolute; z-index: 0; bottom: 10px; left: 50%; transform: translateX(-50%);">
           <button class="graph-button d-none" style="border-radius: 10px; background-color: #124CAA;"
             id="transient-train-graph">Live Train Graphs</button>
@@ -841,7 +863,7 @@
       <br>
       <div class="mt-4">
       </div>
-      <h4 style="color: #124caa;" class="">Modify Station</h4>
+      <h4 style="color: #124caa;" class="">Add DERs</h4>
 
       <div id="station-content">
         <table id="station-table" style="margin-bottom: 0;" class="table table-striped ">
@@ -865,26 +887,26 @@
           </tbody>
         </table>
         <div class=""
-          style="display: flex; background-color: #F9F9F9; align-items: center; justify-content: center; padding-top: .75rem; padding-bottom: .75rem;">
-          <button class="station-button beforeButton"
+          style="display: flex; background-color: #f2f2f2; align-items: center; justify-content: center; padding-top: .75rem; padding-bottom: .75rem;">
+          <button class="station-button"
             style="background-color: #124CAA; color: white; border-radius:25px; font-size: 17px; padding-left: 20px; padding-right: 20px;"
             id="add-line">Add</button>
         </div>
-        <h4 style="color: #124caa; margin-top: 3rem;">Simulate Live Train</h4>
+        <h4 style="color: #124caa; margin-top: 3rem;">Add Train</h4>
 
         <table id="transient-table" class="table table-striped">
           <thead>
             <tr style="background-color: transparent; color: #266ee2; border-bottom: 2px solid #14B8A6;">
               <th style="font-weight: 300; border-bottom: 2px solid #4183ee;" scope="col">Origin Station</th>
               <th style="font-weight: 300; border-bottom: 2px solid #4183ee;" scope="col">Destination Station</th>
-              <th style="font-weight: 300; border-bottom: 2px solid #4183ee;" scope="col">Train Type</th>
+              <th style="font-weight: 300; border-bottom: 2px solid #4183ee;" scope="col">Service</th>
               <th style="font-weight: 300;border-bottom: 2px solid #4183ee;" scope="col"></th>
               <th style="font-weight: 300;border-bottom: 2px solid #4183ee;" scope="col"></th>
             </tr>
           </thead>
           <tbody>
             <tr id="transient-no-data-row">
-              <td colspan="5" style="background-color: rgb(249, 249, 249);">
+              <td colspan="5">
                 <!-- <h2 style="font-size: 20px;" class="no-data-text">Not Added Yet ,  ?</h2> -->
                 <button class="station-button" id="add-transient-line"
                   style="background-color: #124CAA; color: white; border-radius:25px; font-size: 17px; padding-left: 20px; padding-right: 20px;">Add</button>
@@ -1021,7 +1043,7 @@
     },
     {
       label: "Times Sq–42 St",
-      imgSrc: "{% static 'hover_images/TImes_square.jpg' %}",
+      imgSrc: "{% static 'hover_images/Times_square.jpg' %}",
       cords: {
         top: "31.4%",
         left: "11%"
@@ -1398,48 +1420,43 @@
   const handleRenderGraph = (index) => {
     let idx = index;
     const parent = document.createElement('div');
-    // const referenceDiv = document.getElementById(va]);
     parent.tabIndex = -1;
     parent.classList.add('graphContainerParent');
     parent.addEventListener("keydown", function (e) {
-      console.log({ key: e.key })
-      const key = e.key;
-      if (key === "ArrowLeft") {
-        const prev = document.getElementsByClassName('graphContainerSelected')[0];
-        let id = prev.index;
-        console.log({ id })
-        if (id > powerHouses.length) {
-          id = 1;
+        const key = e.key;
+        if (key === "ArrowLeft") {
+            const prev = document.getElementsByClassName('graphContainerSelected')[0];
+            let id = prev.index;
+            if (id > powerHouses.length) {
+                id = 1;
+            }
+            if (id > 1) {
+                const overflowenDiv = document.getElementById("overflowenDiv");
+                overflowenDiv.style.transform = `translateX(${(id - 3) * -30}vw)`;
+                prev.classList.add('graphContainer');
+                prev.classList.remove('graphContainerSelected');
+                const current = document.getElementById(`${powerHouses[id - 2].id}_graphContainer`);
+                current.classList.add('graphContainerSelected');
+                current.classList.remove('graphContainer');
+            }
+        } else if (key === "ArrowRight") {
+            const prev = document.getElementsByClassName('graphContainerSelected')[0];
+            let id = prev.index;
+            if (id < 1) {
+                id = powerHouses.length;
+            }
+            if (id <= powerHouses.length - 1) {
+                const overflowenDiv = document.getElementById("overflowenDiv");
+                overflowenDiv.style.transform = `translateX(${(id - 1) * -30}vw)`;
+                prev.classList.add('graphContainer');
+                prev.classList.remove('graphContainerSelected');
+                const current = document.getElementById(`${powerHouses[id].id}_graphContainer`);
+                current.classList.add('graphContainerSelected');
+                current.classList.remove('graphContainer');
+            }
         }
-        if (id > 1) {
+    });
 
-          const overflowenDiv = document.getElementById("overflowenDiv");
-          overflowenDiv.style.transform = `translateX(${(id - 3) * -30}vw)`;
-          prev.classList.add('graphContainer');
-          prev.classList.remove('graphContainerSelected');
-          const current = document.getElementById(`${powerHouses[id - 2].id}_graphContainer`);
-          current.classList.add('graphContainerSelected');
-          current.classList.remove('graphContainer');
-        }
-      }
-      else if (key === "ArrowRight") {
-        const prev = document.getElementsByClassName('graphContainerSelected')[0];
-        let id = prev.index;
-        console.log({ id })
-        if (id < 1) {
-          id = powerHouses.length;
-        }
-        if (id <= powerHouses.length - 1) {
-          const overflowenDiv = document.getElementById("overflowenDiv");
-          overflowenDiv.style.transform = `translateX(${(id - 1) * -30}vw)`;
-          prev.classList.add('graphContainer');
-          prev.classList.remove('graphContainerSelected');
-          const current = document.getElementById(`${powerHouses[id].id}_graphContainer`);
-          current.classList.add('graphContainerSelected');
-          current.classList.remove('graphContainer');
-        }
-      }
-    })
     parent.id = "graphContainerParent";
     const innerParent = document.createElement('div');
     innerParent.classList.add('graphInnerContainer');
@@ -1448,82 +1465,151 @@
     overflowenDiv.classList.add('overflowenDiv');
     overflowenDiv.id = "overflowenDiv";
     overflowenDiv.style.transform = `translateX(${(idx - 2) * -30}vw)`;
-    powerHouses.map((val, ids) => {
-      const referenceDiv = document.getElementById(val.id);
-      console.log({ referenceDiv: referenceDiv.attributes.image_file.value })
-      const graphContainer = document.createElement('div');
-      graphContainer.addEventListener("click", function () {
-        parent.focus();
-      })
-      graphContainer.id = `${val.id}_graphContainer`;
-      graphContainer.index = val.index;
-      const subParentGraphContainer = document.createElement('div');
-      subParentGraphContainer.classList.add('subParentGraphContainer');
-      if (ids + 1 == idx) {
-        graphContainer.classList.add('graphContainerSelected');
-      }
-      else {
-        graphContainer.classList.add('graphContainer');
-      }
-      const heading = document.createElement("span");
-      heading.classList.add('graphHeading');
-      heading.innerHTML = val.alt;
-      const graph = document.createElement('img');
-      graph.src = referenceDiv.attributes.image_file.value;
-      graph.classList.add('graphImage');
-      graph.id = `${val.id}_graph`;
-      const changeSelctionsButtons = document.createElement("button");
-      changeSelctionsButtons.classList.add('changeSelctionsButtons');
-      changeSelctionsButtons.addEventListener("click", function () {
-        const idd = val.index;
-        parent.focus();
-        const overflowenDiv = document.getElementById("overflowenDiv");
-        overflowenDiv.style.transform = `translateX(${(idd - 2) * -30}vw)`;
-        const prev = document.getElementsByClassName('graphContainerSelected')[0];
-        prev.classList.add('graphContainer');
-        prev.classList.remove('graphContainerSelected');
-        const current = document.getElementById(`${val.id}_graphContainer`);
-        current.classList.add('graphContainerSelected');
-        current.classList.remove('graphContainer');
-      })
-      subParentGraphContainer.appendChild(heading);
-      subParentGraphContainer.appendChild(graph);
 
-      subParentGraphContainer.appendChild(changeSelctionsButtons);
-      graphContainer.appendChild(subParentGraphContainer);
-      // subParentGraphContainer.appendChild(toggleDiv);
-      overflowenDiv.appendChild(graphContainer);
-    })
+    powerHouses.map((val, ids) => {
+        const referenceDiv = document.getElementById(val.id);
+        const graphContainer = document.createElement('div');
+        graphContainer.addEventListener("click", function () {
+            parent.focus();
+        });
+        graphContainer.id = `${val.id}_graphContainer`;
+        graphContainer.index = val.index;
+        const subParentGraphContainer = document.createElement('div');
+        subParentGraphContainer.classList.add('subParentGraphContainer');
+
+        if (ids + 1 == idx) {
+            graphContainer.classList.add('graphContainerSelected');
+        } else {
+            graphContainer.classList.add('graphContainer');
+        }
+
+        const heading = document.createElement("span");
+        heading.classList.add('graphHeading');
+        heading.innerHTML = val.alt;
+
+        // Create span with class "horizontal" to contain the before and after buttons
+        const buttonContainer = document.createElement('span');
+        buttonContainer.classList.add('horizontal');
+
+        const beforeButton = document.createElement('button');
+        beforeButton.innerHTML = '&#8249;';
+        beforeButton.classList.add('beforeButton');
+        beforeButton.style.display = (ids === 0) ? 'none' : ''; // Hide if it's the first element (index 0)
+        buttonContainer.appendChild(beforeButton);
+        beforeButton.addEventListener("click", function () {
+          // Get the currently selected graph container
+          const prev = document.getElementsByClassName('graphContainerSelected')[0];
+          const idd = prev.index - 1;
+
+          // Update the overflowenDiv's transform to show the previous graph
+          const overflowenDiv = document.getElementById("overflowenDiv");
+          overflowenDiv.style.transform = `translateX(${(idd - 2) * -30}vw)`;
+
+          // Update classes for the previous and current graph containers
+          prev.classList.add('graphContainer');
+          prev.classList.remove('graphContainerSelected');
+
+          const current = document.getElementById(`${powerHouses[idd - 1].id}_graphContainer`);
+          current.classList.add('graphContainerSelected');
+          current.classList.remove('graphContainer');
+
+          parent.focus();
+      });
+
+        const afterButton = document.createElement('button');
+        afterButton.innerHTML = '&#8250;';
+        afterButton.classList.add('afterButton');
+         afterButton.style.display = (ids === powerHouses.length - 1) ? 'none' : '';
+        afterButton.addEventListener("click", function () {
+            // Get the currently selected graph container
+            const prev = document.getElementsByClassName('graphContainerSelected')[0];
+            const idd = prev.index + 1;
+
+            // Update the overflowenDiv's transform to show the next graph
+            const overflowenDiv = document.getElementById("overflowenDiv");
+            overflowenDiv.style.transform = `translateX(${(idd - 2) * -30}vw)`;
+
+            // Update classes for the next and current graph containers
+            prev.classList.add('graphContainer');
+            prev.classList.remove('graphContainerSelected');
+
+            // Check if the next index is within the bounds
+            if (idd <= powerHouses.length) {
+                const current = document.getElementById(`${powerHouses[idd - 1].id}_graphContainer`);
+                current.classList.add('graphContainerSelected');
+                current.classList.remove('graphContainer');
+            }
+
+            parent.focus();
+        });
+
+        // Append buttons to buttonContainer
+        buttonContainer.appendChild(beforeButton);
+        
+
+        const graph = document.createElement('img');
+        graph.src = referenceDiv.attributes.image_file.value;
+        graph.classList.add('graphImage');
+        graph.id = `${val.id}_graph`;
+
+        const changeSelctionsButtons = document.createElement("button");
+        changeSelctionsButtons.classList.add('changeSelctionsButtons');
+        changeSelctionsButtons.addEventListener("click", function () {
+            const idd = val.index;
+            parent.focus();
+            const overflowenDiv = document.getElementById("overflowenDiv");
+            overflowenDiv.style.transform = `translateX(${(idd - 2) * -30}vw)`;
+            const prev = document.getElementsByClassName('graphContainerSelected')[0];
+            prev.classList.add('graphContainer');
+            prev.classList.remove('graphContainerSelected');
+            const current = document.getElementById(`${val.id}_graphContainer`);
+            current.classList.add('graphContainerSelected');
+            current.classList.remove('graphContainer');
+        });
+
+        // Append elements in the correct order
+        subParentGraphContainer.appendChild(heading);
+        subParentGraphContainer.appendChild(buttonContainer); // Add button container instead of individual buttons
+        buttonContainer.appendChild(graph);
+        buttonContainer.appendChild(afterButton);
+        subParentGraphContainer.appendChild(changeSelctionsButtons);
+        graphContainer.appendChild(subParentGraphContainer);
+        overflowenDiv.appendChild(graphContainer);
+    });
+
     const toggleDiv = document.createElement('div');
     toggleDiv.classList.add('toggleDiv');
     const hour24 = document.createElement('button');
     hour24.innerHTML = "24 Hours";
     hour24.classList.add('toggleButton');
     hour24.classList.add('selectedButton');
+
     const liveButton = document.createElement('button');
     liveButton.addEventListener("click", function () {
-      const liveButton = document.getElementsByClassName('toggleButton')[1];
-      const hour24Button = document.getElementsByClassName('toggleButton')[0];
-      liveButton.classList.add('selectedButton');
-      hour24Button.classList.remove('selectedButton');
-      powerHouses.map((val, ids) => {
-        const referenceDiv = document.getElementById(val.id);
-        const graph = document.getElementById(`${val.id}_graph`);
-        graph.src = referenceDiv.attributes.transient_image_file.value;
-      })
-    })
+        const liveButton = document.getElementsByClassName('toggleButton')[1];
+        const hour24Button = document.getElementsByClassName('toggleButton')[0];
+        liveButton.classList.add('selectedButton');
+        hour24Button.classList.remove('selectedButton');
+        powerHouses.map((val, ids) => {
+            const referenceDiv = document.getElementById(val.id);
+            const graph = document.getElementById(`${val.id}_graph`);
+            graph.src = referenceDiv.attributes.transient_image_file.value;
+        });
+    });
+
     const status = document.createElement('div');
     hour24.addEventListener("click", function () {
-      const liveButton = document.getElementsByClassName('toggleButton')[1];
-      const hour24Button = document.getElementsByClassName('toggleButton')[0];
-      liveButton.classList.remove('selectedButton');
-      hour24Button.classList.add('selectedButton');
-      powerHouses.map((val, ids) => {
-        const referenceDiv = document.getElementById(val.id);
-        const graph = document.getElementById(`${val.id}_graph`);
-        graph.src = referenceDiv.attributes.image_file.value;
-      })
-    })
+        const liveButton = document.getElementsByClassName('toggleButton')[1];
+        const hour24Button = document.getElementsByClassName('toggleButton')[0];
+        liveButton.classList.remove('selectedButton');
+        hour24Button.classList.add('selectedButton');
+        powerHouses.map((val, ids) => {
+            const referenceDiv = document.getElementById(val.id);
+            const graph = document.getElementById(`${val.id}_graph`);
+            graph.src = referenceDiv.attributes.image_file.value;
+        });
+    });
+
     status.classList.add('status');
     liveButton.innerHTML = "Live";
     liveButton.classList.add('toggleButton');
@@ -1532,20 +1618,22 @@
     toggleDiv.appendChild(liveButton);
     innerParent.appendChild(overflowenDiv);
     innerParent.appendChild(toggleDiv);
+    
     const crossButton = document.createElement('button');
     crossButton.classList.add('crossButton');
     crossButton.innerHTML = "⨯";
     crossButton.addEventListener("click", function () {
-      // document.getElementById('new-content').removeChild(document.getElementById('graphContainerParent'));
-      const parent = document.getElementById('graphContainerParent');
-      parent.style.display = "none";
-      parent.remove();
-    })
+        const parent = document.getElementById('graphContainerParent');
+        parent.style.display = "none";
+        parent.remove();
+    });
+    
     parent.appendChild(innerParent);
     parent.appendChild(crossButton);
     document.getElementById('new-content').appendChild(parent);
     parent.focus();
-  }
+}
+
   const handleRenderGraphLive = (index) => {
     let idx = index;
     console.log("entered")
@@ -2052,8 +2140,8 @@
       var passengerStationDict = { 'HudsonYards': '34 St-Hudson Yards', 'TimesSquare': 'Times Square-42 St', 'Ave5': '5 Ave', 'GrandCentral': 'Grand Central-42 St', 'Vernon': 'Vernon Blvd-Jackson Av', 'HuntersPoint': 'Hunters Point Av', 'CourtSquare': 'Court Square', 'QueensboroPlaza': 'Queensboro Plaza', 'St33': '33 St-Rawson St', 'St40': '40 St-Lowery St', 'St46': '46 St-Bliss St', 'St52': '52 St', 'St61': '61 St-Woodside', 'St69': '69 St', 'St74': '74 St-Broadway', 'St82': '82 St-Jackson Hts', 'St90': '90 St-Elmhurst Av', 'JunctionBlvd': 'Junction Blvd', 'St103': '103 St-Corona Plaza', 'St111': '111 St', 'WilletsPoint': 'Mets-Willets Pt', 'MainSt': 'Flushing-Main St' }
       $('#transient-table tr[name="' + transient_data.origin_station + '"]').remove()
       var temp = `<tr class="t-station" style="background-color:rgb(249, 249, 249);" name="${transient_data.origin_station}">
-          <td style="font-weight : bold;">${passengerStationDict[transient_data.origin_station]}</td>
-          <td style="font-weight : bold;">${passengerStationDict[transient_data.destination_station]}</td>
+          <td>${passengerStationDict[transient_data.origin_station]}</td>
+          <td>${passengerStationDict[transient_data.destination_station]}</td>
           <td>${transient_data.train_type}</td>
           <td>
             <img value="${transient_data.origin_station}" name="edit" style="width:20px;" src="${$('#mta_7_line_details').attr('edit-src')}" alt="">
@@ -2212,7 +2300,7 @@
           // const hidedButton = document.getElementsByClassName('appearAfter')[0];
           // hidedButton.classList.remove('appearAfter');
           var temp = `<tr class="p-station" style="background-color:rgb(249, 249, 249);" name="${power_station_data.power_stations}">
-                <td style="font-weight : bold;">${stationDict[power_station_data.power_stations]}</td>
+                <td>${stationDict[power_station_data.power_stations]}</td>
                 <td>${ev_size}</td>
                 <td>${power_solar_size}</td>
                 <td>${battery_size}</td>
@@ -2350,19 +2438,27 @@
     if ($(e).attr('name') == 'power_stations') {
       var pStation = ['Hudson34', 'Ave10', 'Ave7', 'Park', 'Tudor', 'Ave50', 'QueensBlvd']
       if (pStation.includes($(e).val()) || $(e).val() == '') {
-        $('.solar-check-box').addClass('d-none')
+        $('.solar-check-box').addClass('disabled')
+        $('.solar_expand').addClass('d-none')
+        $('#mta_solar').prop('checked', false);
+        $('.solar-tool-tip').removeClass('d-tool-none')
       }
       else {
-        $('.solar-check-box').removeClass('d-none')
+        $('.solar-check-box').removeClass('disabled')
+        $('.solar_expand').removeClass('d-none')
+        $('.solar-tool-tip').addClass('d-tool-none')
       }
     }
     else {
       var psgStation = ['HudsonYards', 'TimesSquare', 'Ave5', 'GrandCentral', 'Vernon', 'HuntersPoint', 'MainSt']
       if (psgStation.includes($(e).val()) || $(e).val() == '') {
-        $('.solar-check-box').addClass('d-none')
+        $('.solar-check-box').addClass('disabled')
+        $('.solar_expand').addClass('d-none')
+        $('#mta_solar').prop('checked', false);
       }
       else {
-        $('.solar-check-box').removeClass('d-none')
+        $('.solar-check-box').removeClass('disabled')
+        $('.solar_expand').removeClass('d-none')
       }
     }
   }
@@ -2720,5 +2816,9 @@
     modalGraph.style.display = 'none';
     $(".myGSlides").remove();
   });
+  // script.js
+function updateValue(value,id) {
+    document.getElementById(id).textContent = value;
+}
 </script>
 {% endblock %}
